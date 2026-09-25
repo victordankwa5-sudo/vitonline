@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/jpg"
+      href="{{url_for('static', filename='img/favicon.jpg')}}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/style.css')}}"
+    />
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <title>{% block title %}{% endblock %}</title>
+  </head>
+  <body>
+    <aside class="sidebar" id="sidebar">
+      <button
+        class="menu-btn menu-dismis-btn"
+        id="menuDismisBtn"
+        onclick="navBarToggleClose()"
+      >
+        &times;
+      </button>
+      <div class="logo">
+        <a href="profile">
+          <div class="logo-icon"><i class="fas fa-user"></i></div>
+          <span>Profile</span>
+        </a>
+      </div>
+      <nav>
+        {% if user.is_authenticated%}
+        <p class="nav-title">{{user.username}}</p>
+        <a href="/" class="nav-link">
+          <span><i class="fas fa-home"></i></span> Home
+        </a>
+        <a href="products" class="nav-link">
+          <span><i class="fas fa-box"></i></span> Products
+        </a>
+        <a href="cart" class="nav-link" data-page="orders">
+          <span><i class="fas fa-shopping-cart"></i></span>Cart
+          <b class="badge" id="cart-count">{{ cart_num | length }}</b>
+        </a>
+        <a href="orders" class="nav-link">
+          <span><i class="fas fa-box-open"></i></span> Orders
+        </a>
+        <a href="/about-us" class="nav-link">
+          <span><i class="fas fa-info-circle"></i></span> About Us
+        </a>
+        {% if user.id == 1 %}
+        <a href="admin-dashboard" class="nav-link" data-page="customers">
+          <span><i class="fas fa-user-shield"></i></span> Admin
+        </a>
+        {% endif %} {% else %}
+        <a href="login" class="nav-link">
+          <span><i class="fas fa-sign-in-alt"></i></span> Login
+        </a>
+        <a href="signup" class="nav-link">
+          <span><i class="fas fa-user-plus"></i></span> Signup
+        </a>
+        {% endif %}
+      </nav>
+      {% if user.is_authenticated %}
+      <div class="sidebar-bottom">
+        <a href="logout"><button class="logout-btn">↪ Logout</button></a>
+      </div>
+      {% endif %}
+    </aside>
+
+    <header class="header">
+      <div class="container nav-container">
+        <nav class="nav" id="nav">
+          <img
+            src="{{url_for('static', filename='img/favicon.jpg')}}"
+            alt="logo"
+          />
+          {% if user.is_authenticated %}
+          <p>
+            <select name="filter" id="filter" style="display: none">
+              <option value="all">All</option>
+              <option value="laptops">Laptops</option>
+              <option value="phones/tablets">Phones/Tablets</option>
+              <option value="accessories">Accessories</option>
+              <option value="desktop">Desktop</option>
+              <option value="peripharals">Peripharals</option>
+              <option value="gaming">Gaming</option>
+              <option value="sound">Sound</option>
+              <option value="security">Security</option>
+            </select>
+          </p>
+          <a href="/"><i class="fas fa-home"></i> Home</a>
+          <a href="products"><i class="fas fa-box"></i> Products</a>
+          <a href="/about-us"><i class="fas fa-info-circle"></i> About Us</a>
+          {% else %}
+          <a href="login">Login</a>
+          <a href="signup">Signup</a>
+          {% endif %}
+        </nav>
+        <div class="back-btn-container" style="display: none">
+          <!-- button is injected by javascript -->
+        </div>
+
+        <button
+          class="menu-btn nav-menu-btn"
+          id="menuBtn"
+          onclick="navBarToggleOpen()"
+        >
+          ☰
+        </button>
+        <form
+          class="search-box"
+          method="POST"
+          role="search"
+          ,
+          action="/search"
+          style="display: none"
+          id="search-box"
+        >
+          <input
+            name="search"
+            class="search-input"
+            type="text"
+            placeholder="search on vit"
+          />
+          <button type="submit" class="search-btn">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+        <div class="header-logo">
+          <a href="cart"
+            ><i class="fas fa-shopping-cart"></i> <span id="cart-count">{{cart_num | length}}</span>
+          </a>
+          <button class="btn-show-dropdown">
+            <i class="fas fa-user"></i> <i class="fas fa-arrow-down"></i>
+          </button>
+          <button class="btn-hide-dropdown">
+            <i class="fas fa-user"></i> <i class="fas fa-arrow-up"></i>
+          </button>
+          <img
+            class="mobile-logo"
+            src="{{url_for('static', filename='img/favicon.jpg')}}"
+            alt="logo"
+          />
+        </div>
+      </div>
+    </header>
+
+    <div class="flash-container">
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %} {% for category, message in messages %} {% if
+          category=='error' %}
+          <div class="flash alert-error" role="alert" id="div_flash">
+            {{message}}
+            <!-- <button type="button" class="btn-error" onclick="removeFlash()">
+              <span aria-hidden="true">&times;</span>
+            </button> -->
+          </div>
+
+          {% else %}
+          <div id="div_flash2" class="flash alert-success" role="alert">
+        {{message}}
+        <!-- <button type="button" class="btn-success" onclick="removeFlash()">
+                            <span aria-hidden="true">&times;</span>
+                        </button> -->
+      </div>
+      {% endif %} {% endfor %} {% endif %} {% endwith %}
+    </div>
+    <section class="dropdown-menu">
+      {% if user.id == 1 %}
+      <a href="admin-dashboard"
+        ><div><i class="fas fa-user-shield"></i> Admin</div></a
+      >
+      {% endif %}
+      <a href="orders"
+        ><div><i class="fas fa-box-open"></i> Orders</div></a
+      >
+      <a href="profile"
+        ><div><i class="fas fa-user"></i> Profile</div></a
+      >
+      <a href="logout"
+        ><div><i class="fas fa-sign-out-alt"></i> Logout</div></a
+      >
+    </section>
+
+    {% block body %} {% endblock %}
+    
+    <footer class="footer">
+      <div class="container">
+        <p>© 2026 TechStore. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="{{url_for('static', filename='js/script.js')}}"></script>
+    <script src="{{url_for('static', filename='js/base.js')}}"></script>
+  </body>
+</html>

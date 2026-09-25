@@ -1,0 +1,120 @@
+{% extends 'admin-base.html' %} {% block title %} Update product {% endblock %}
+{% block body %}
+
+<div class="modal show">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div>
+        <h2 id="modalTitle">Add New Product</h2>
+        <p>Enter product information below.</p>
+      </div>
+      <button class="close-btn" id="closeModal" onclick="hideProductForm()">
+        ×
+      </button>
+    </div>
+    <form id="productForm" method="POST" enctype="multipart/form-data">
+      <input type="hidden" id="productId" />
+      <div class="form-group">
+        <label>Product Name</label>
+        <input
+          type="text"
+          id="productName"
+          name="product-name"
+          value="{{product.name}}"
+          placeholder="e.g. Wireless Headphones"
+          required
+        />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Previous price</label>
+          <input
+            type="number"
+            name="previous-price"
+            id="productPrice"
+            value="{{product.previous_price}}"
+            placeholder="0.00"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Current price</label>
+          <input
+            type="number"
+            name="current-price"
+            id="productPrice"
+            value="{{product.current_price}}"
+            placeholder="0.00"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Shipping fee</label>
+          <input
+            type="number"
+            name="shipping-fee"
+            id="shipping-fee"
+            value="{{product.shipping_fee}}"
+            placeholder="0.00"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Stock</label>
+          <input
+            type="number"
+            id="productStock"
+            name="product-stock"
+            value="{{product.stock}}"
+            placeholder="0"
+            required
+          />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select id="productCategory" name="product-category">
+          <option>Laptops</option>
+          <option>Phones/Tablets</option>
+          <option>Accessories</option>
+          <option>Desktop</option>
+          <option>Peripharals</option>
+          <option>Gaming</option>
+          <option>Sound</option>
+          <option>Security</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Product Image URL</label>
+        <input type="file" id="image-file" name="image-file" required/>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea
+          id="productDescription"
+          name="product-des"
+          minlength="20"
+          maxlength="60"
+          placeholder="{{product.description}}"
+        ></textarea>
+      </div>
+      <div class="flash-sale-check">
+        <label for="flash-sale">Flash sale</label>
+        <input type="checkbox" name="flash-sale" id="flash-sale"/>
+      </div>
+      <div class="modal-actions">
+        <button
+          type="button"
+          class="cancel-btn"
+          id="cancelModal"
+          onclick="hideProductForm()"
+        >
+          Cancel
+        </button>
+        <button type="submit" class="primary-btn">Update Product</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

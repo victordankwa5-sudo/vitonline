@@ -1,0 +1,53 @@
+{% extends 'admin-base.html' %} {% block title %} Customers {% endblock %} {%
+block body %}
+<!-- Customers -->
+<section class="page" id="customers">
+  <div class="page-toolbar">
+    <div>
+      <h2>Customers</h2>
+      <p>Manage your customers.</p>
+    </div>
+  </div>
+  <div class="panel">
+    {% if customers %}
+
+    <select id="categoryFilter">
+      <option value="date-added">Date Added</option>
+      <option value="status">Status</option>
+      <option value="name">Name</option>
+      <option value="Accessories"></option>
+    </select>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Customer id</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Date joined</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for customer in customers %}
+          <tr>
+            <td>{{ customer.id }}</td>
+            <td>{{ customer.username }}</td>
+            <td>{{ customer.email }}</td>
+            <td>{{ customer.date_joined }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% else %}
+    <div class="empty-state">
+      <div>👥</div>
+      <h3>Customer Management</h3>
+      <p>Customer information and order history will appear here.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

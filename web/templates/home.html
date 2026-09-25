@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIT Global – Laptops & IT Appliances</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+  <!-- Decorative circles -->
+  <div class="circle one"></div>
+  <div class="circle two"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <a href="home.html" class="logo">VIT Global</a>
+      <nav class="nav">
+        <a href="home.html">Home</a>
+        <a href="#products">Products</a>
+        <a href="wishlist.html" class="wishlist-link">Wishlist (<span id="wishlist-count">0</span>)</a>
+        <a href="cart.html" class="cart-link">Cart (<span id="cart-count">0</span>)</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Brand Search (directly under nav) -->
+  <div class="brand-search-bar">
+    <div class="container">
+      <div class="brand-search-inner">
+        <label for="brand-search" class="brand-search-label">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="M21 21l-4.35-4.35"></path>
+          </svg>
+          Filter by Brand
+        </label>
+        <select id="brand-search" class="brand-select">
+          <option value="">All Brands</option>        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1>Premium Laptops & IT Solutions</h1>
+      <p>Powerful devices for work, study, and gaming</p>
+      <a href="#products" class="btn">Shop Now</a>
+    </div>
+  </section>
+
+  <!-- Products -->
+  <section id="products" class="products">
+    <div class="container">
+      <h2>Featured Products</h2>
+      <div class="product-grid" id="product-grid">
+        <!-- Products will be injected by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 VIT Global. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script2.js"></script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+{% extends 'admin-base.html' %} {% block title %} Admin Orders {% endblock %} {%
+block body %}
+<!-- Orders Page -->
+<section class="page" id="orders">
+  <div class="page-toolbar">
+    <div>
+      <h2>Orders</h2>
+      <p>Manage customer orders.</p>
+    </div>
+  </div>
+  <div class="panel">
+    {% if orders %}
+    <div class="product-toolbar">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input
+          type="text"
+          id="searchProduct"
+          placeholder="Search orders"
+        />
+      </div>
+      <!-- <select id="categoryFilter">
+        <option value="all">All</option>
+        <option value="date">Date</option>
+        <option value="status">Status</option>
+        <option value="name">Name</option>
+        <option value="id">Id</option>
+      </select> -->
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>ID <span class="icon-arrow">&Uparrow;</span></th>
+            <th>Order Date <span class="icon-arrow">&Uparrow;</span></th>
+            <th>Fullname <span class="icon-arrow">&Uparrow;</span></th>
+            <th>Momo Name <span class="icon-arrow">&Uparrow;</span></th>
+            <th>Items <span class="icon-arrow">&Uparrow;</span></th>
+            <th>Image <span class="icon-arrow">&Uparrow;</span></th>
+            <th>Total <span class="icon-arrow">&Uparrow;</span></th>
+            <th>Phone <span class="icon-arrow">&Uparrow;</span></th>
+            <th>Network <span class="icon-arrow">&Uparrow;</span></th>
+            <th>Payment id <span class="icon-arrow">&Uparrow;</span></th>
+            <th>Region <span class="icon-arrow">&Uparrow;</span></th>
+            <th>Town <span class="icon-arrow">&Uparrow;</span></th>
+            <th>Address <span class="icon-arrow">&Uparrow;</span></th>
+            <th>Status <span class="icon-arrow">&Uparrow;</span></th>
+            <th>Action <span class="icon-arrow">&Uparrow;</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.order_date }}</td>
+            <td>{{ order.payment.full_name }}</td>
+            <td>{{ order.payment.momo_name }}</td>
+            <td>
+              {{ order.product.name }} <span>(x{{ order.quantity }})</span>
+            </td>
+            <td>
+              <img
+                src="{{ order.product.image }}"
+                alt="{{ order.product.name }}"
+              />
+            </td>
+            <td>{{settings.currency}}{{ order.price }}</td>
+            <td>{{ order.payment.phone_number }}</td>
+            <td>{{ order.payment.payment_method }}</td>
+            <td>{{ order.payment_id }}</td>
+            <td>{{ order.payment.region.capitalize() }}</td>
+            <td>{{ order.payment.town.capitalize() }}</td>
+            <td>{{ order.payment.address }}</td>
+            <td>
+              {% if order.status == 'Delivered' %}
+              <p
+                class="delivered"
+                style="
+                  padding: 10px;
+                  border-radius: 10px;
+                  background-color: rgba(72, 255, 72, 0.884);
+                "
+              >
+                {{ order.status }}
+              </p>
+              {% elif order.status == 'Shipped' %}
+              <p
+                class="shipped"
+                style="
+                  padding: 10px;
+                  border-radius: 10px;
+                  background-color: rgba(75, 168, 245, 0.904);
+                "
+              >
+                {{ order.status }}
+              </p>
+              {% elif order.status == 'Pending' %}
+              <p
+                class="pending"
+                style="
+                  padding: 10px;
+                  border-radius: 10px;
+                  background-color: rgba(233, 197, 81, 0.733);
+                "
+              >
+                {{ order.status }}
+              </p>
+              {% else %}
+              <p
+                class="canceled"
+                style="
+                  padding: 10px;
+                  border-radius: 10px;
+                  background-color: rgba(248, 87, 87, 0.904);
+                "
+              >
+                {{ order.status }}
+              </p>
+              {% endif %}
+            </td>
+            <td>
+              <a href="update-order-status/{{order.id}}"
+                ><button class="edit primary-btn">Update</button></a
+              >
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% else %}
+    <div class="empty-state">
+      <div><i class="fas fa-shopping-cart"></i></div>
+      <h3>Orders Management</h3>
+      <p>Your orders will appear here once customers start purchasing.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

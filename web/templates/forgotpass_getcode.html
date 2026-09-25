@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block title %} Forgot Password {% endblock %} {%
+block body%}
+
+<div class="circle one"></div>
+<div class="circle two"></div>
+<div class="login-card">
+  <form class="input-wrapper" id="main-forgot-el" method="POST">
+    <label for="email" style="text-align: center"
+      ><h1 id="input-el-label">ENTER EMAIL</h1></label
+    ><br />
+    <i class="fas fa-envelope"></i>
+    <input
+      type="email"
+      name="email"
+      id="email"
+      placeholder="Enter email"
+      required
+    /><br /><br />
+    <button type="submit" class="login-btn" id="get-code-btn">
+      GET CODE
+    </button>
+  </form>
+</div>
+
+{% endblock%}

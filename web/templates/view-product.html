@@ -1,0 +1,82 @@
+{% extends 'second-base.html' %} {% block title %} View Product {% endblock %}
+{% block body %}
+<div class="circle two"></div>
+<div class="circle one"></div>
+
+<main class="view-product">
+  <div id="view-product">
+    <div class="view-product-card">
+      <div class="image-container">
+        <img class="main-img" src=".{{product.image}}" alt="{{product.name}}" />
+        <div class="nav-image-box">
+          <button class="image-active" onclick="change_image('{{product.image}}')">
+            <img src=".{{product.image}}" alt="Image 1" />
+            <div class="img-badge"><i class="fas fa-check"></i></div>
+          </button>
+          <button onclick="change_image('{{product.image2}}')">
+            <img src=".{{product.image2}}" alt="Image 2" />
+            <div class="img-badge" style="display: none;"><i class="fas fa-check"></i></div>
+          </button>
+          <button onclick="change_image('{{product.image3}}')">
+            <img src=".{{product.image3}}" alt="Image 3" />
+            <div class="img-badge" style="display: none;"><i class="fas fa-check"></i></div>
+          </button>
+        </div>
+      </div>
+      <div class="prod-des">
+        <div>
+          <p>{{product.description}}</p>
+          <h1>{{product.name}}</h1>
+          <div class="price">
+            {{settings.currency}}{{product.current_price}} 
+
+            {% if product.previous_price > product.current_price %}
+            <span class="previous-price">{{settings.currency}}{{product.previous_price}}</span>
+            {% endif %}
+
+          </div>
+          <div class="info-row">
+            {{product.category}} 
+            {% if product.stock < 10 %}
+            <span class="units-left" style="color: red"
+              >{{product.stock}} Units left</span
+            >
+            {% else%}
+            <span class="units-left" style="color: rgb(67, 209, 62)"
+              >{{product.stock}} Units left</span
+            >
+            {% endif %}
+          </div>
+          <div>
+            {% for i in range(5) %}
+              {% if i < product.rating %}
+                <i class="fa-solid fa-star" style="color: yellow; font-size: 25px"></i>
+              {% else %}
+                <i class="fa-solid fa-star" style="color: gray;"></i>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="delivery">
+          <h3>Delivery</h3>
+          <i class="fas fa-truck"></i>
+          <div class="info-row">
+            <span>
+              Delivery Fee
+            </span>
+            <span>{{settings.currency}}{{product.shipping_fee}}</span>
+          </div>
+        </div>
+
+        <div>
+          <button class="btn add-to-cart-btn" pid="{{product.id}}">
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock %}

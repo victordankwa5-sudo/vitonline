@@ -1,0 +1,104 @@
+{% extends 'second-base.html' %} 
+{% block title %} Checkout {% endblock %}
+{% block body %}
+<div class="circle one"></div>
+<div class="circle two"></div>
+
+<script src="https://js.paystack.co/v1/inline.js"></script>
+
+<main class="checkout-container">
+    <div class="pay-cart-summary">
+        <h1 align="center">CHECKOUT</h1>
+        <div class="item-summary">
+            {% for detail in cart_detail %}
+            <p class="item-row"><span>{{detail.product.name}}</span> <span><i class="fas fa-times"></i> x{{detail.quantity}}</span></p>
+            {% endfor %}
+            <p class="subtotal"><span><i class="fas fa-money-bill"></i> Subtotal</span> <span>{{settings.currency}}{{amount}}</span></p>
+            <p class="subtotal shipping"><span><i class="fas fa-truck"></i> Shipping</span> <span>{{settings.currency}}{{ total_shipping_fee }}</span></p>
+            <p class="total">
+              <span><i class="fas fa-wallet"></i> Total</span> <span class="cart-total">{{settings.currency}}{{total}}</span>
+            </p>
+          
+          <input type="email" id="customer-email" 
+                 value="{{ current_user.email if current_user.is_authenticated else '' }}" 
+                 placeholder="Enter your email" 
+                 style="width:100%; padding:12px; margin:15px 0; border-radius:8px; border:1px solid #ccc;" required>
+
+          <button class="btn" id="checkout-btn" data-total="{{ total }}" style="width:100%">Pay {{settings.currency}}{{total}}</button>
+          <p id="pay-status" style="text-align:center; margin-top:10px;"></p>
+        </div>
+    </div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  let paystackPublicKey = '';
+  const payBtn = document.getElementById('checkout-btn');
+  const totalAmount = payBtn.getAttribute('data-total');
+
+  fetch('/api/pay/config')
+    .then(r => r.json())
+    .then(d => { paystackPublicKey = d.public_key; });
+
+  payBtn.addEventListener('click', async function(e) {
+    e.preventDefault();
+    const emailInput = document.getElementById('customer-email');
+    const email = emailInput.value.trim();
+    const statusEl = document.getElementById('pay-status');
+
+    if(!email){ alert('Please enter email'); return; }
+
+    payBtn.textContent = 'Processing...';
+    payBtn.disabled = true;
+
+    try {
+      const initRes = await fetch('/api/pay/initialize', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ email: email, amount: totalAmount, order_id: 'VIT-' + Date.now() })
+      });
+      const initData = await initRes.json();
+      
+      if(!initData.status){
+        statusEl.textContent = initData.message;
+        payBtn.textContent = 'Pay ' + totalAmount;
+        payBtn.disabled = false;
+        return;
+      }
+
+      const reference = initData.data.reference;
+
+      let handler = PaystackPop.setup({
+        key: paystackPublicKey,
+        email: email,
+        amount: parseFloat(totalAmount) * 100,
+        currency: 'GHS',
+        ref: reference,
+        onClose: function(){
+          payBtn.textContent = 'Pay {{settings.currency}}' + totalAmount;
+          payBtn.disabled = false;
+        },
+        callback: function(response){
+          statusEl.textContent = 'Verifying...';
+          fetch('/api/pay/verify/' + response.reference)
+            .then(r=>r.json())
+            .then(d=>{
+              if(d.status === 'success'){
+                window.location.href = '/success?reference=' + response.reference;
+              } else {
+                statusEl.textContent = 'Verification failed';
+                payBtn.disabled = false;
+              }
+            });
+        }
+      });
+      handler.openIframe();
+    } catch(err){
+      console.log(err);
+      statusEl.textContent = 'Network error';
+      payBtn.disabled = false;
+    }
+  });
+});
+</script>
+{% endblock %}

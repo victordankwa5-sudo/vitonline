@@ -1,0 +1,105 @@
+{% extends 'second-base.html' %} {% block title %} Personal info {% endblock %}
+{% block body %}
+
+<main class="checkout-page">
+  <div class="container">
+    <h1>PERSONAL INFO</h1>
+    <form id="checkout-form" class="checkout-form" method="POST">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input
+          type="text"
+          name="fullname"
+          required
+          placeholder="John Doe"
+          minlength="4"
+        />
+      </div>
+      <div class="form-group">
+        <label>Momo Name</label>
+        <input
+          type="text"
+          name="momo-name"
+          required
+          placeholder="John Doe"
+          minlength="4"
+        />
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input
+          type="tel"
+          name="phone-number"
+          required
+          placeholder="0*********"
+          maxlength="10"
+          minlength="10"
+        />
+      </div>
+      <div class="form-group">
+        <label>Region</label>
+        <select name="region" id="region" required>
+          <option value="greater accra region">Greater Accra</option>
+          <option value="ashanti region">Ashanti</option>
+          <option value="central region">Central</option>
+          <option value="western region">Western</option>
+          <option value="eastern region">Eastern</option>
+          <option value="volta region">Volta</option>
+          <option value="northern region">Northern</option>
+          <option value="upper east region">Upper East</option>
+          <option value="upper west region">Upper West</option>
+          <option value="bono region">Bono</option>
+          <option value="bono east region">Bono East</option>
+          <option value="ahafo region">Ahafo</option>
+          <option value="savannah region">Savannah</option>
+          <option value="north east region">North East</option>
+          <option value="western north region">Western</option>
+          <option value="oti region">Oti</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Town</label>
+        <select name="town" id="town" required>
+          <option value="accra">Accra</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Address</label>
+        <textarea
+          name="address"
+          required
+          placeholder="Street address, apartment, etc."
+        ></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Postal Code</label>
+          <input
+            type="text"
+            name="postal-code"
+            required
+            placeholder="10001"
+            minlength="4"
+          />
+        </div>
+        <div class="form-group">
+          <label>Country</label>
+          <select name="country" id="country" required>
+            <option value="ghana">Ghana</option>
+          </select>
+        </div>
+      </div>
+
+      <h3>Payment Method</h3>
+      <select name="payment-method" id="payment-method" required>
+        <option value="mtn">MTN</option>
+        <option value="vodafone">VODAFONE</option>
+        <option value="AIRTEL">AIRTEL</option>
+      </select>
+
+      <button type="submit" class="btn">Submit</button>
+    </form>
+  </div>
+</main>
+
+{% endblock %}

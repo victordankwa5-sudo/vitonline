@@ -1,0 +1,93 @@
+{% extends 'admin-base.html' %} {% block title %} Admin-Product {% endblock %} {%
+block body %}
+  <!-- Products Page -->
+  <section class="page" id="products">
+    <div class="page-toolbar">
+      <div>
+        <h2>Products</h2>
+        <p>Manage your store products.</p>
+      </div>
+      <a href="add-product"><button class="primary-btn" id="addProductBtn">+ Add Product</button></a>
+    </div>
+    <div class="panel">
+      <div class="product-toolbar">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input
+            type="text"
+            id="searchProduct"
+            placeholder="Search products..."
+          />
+        </div>
+          <select id="categoryFilter">
+            <option>All</option>
+            <option>Laptops</option>
+            <option>Phones/Tablets</option>
+            <option>Accessories</option>
+            <option>Destop</option>
+            <option>Peripharals</option>
+            <option>Gaming</option>
+            <option>Sound</option>
+            <option>Security</option>
+          </select>
+          
+      </div>
+      <div class="table-wrapper">
+        {% if products | length < 0 %}
+          <p>You have no products yet</p>
+        {% else %}
+        <table>
+          <thead>
+            <tr>
+        <th>ID <span class="icon-arrow">&UpArrow;</span></th>
+        <th>IMAGE <span class="icon-arrow">&UpArrow;</span></th>
+        <th>NAME <span class="icon-arrow">&UpArrow;</span></th>
+        <th>P. PRICE <span class="icon-arrow">&UpArrow;</span></th>
+        <th>C. PRICE <span class="icon-arrow">&UpArrow;</span></th>
+        <th>SHIPPING FEE <span class="icon-arrow">&UpArrow;</span></th>
+        <th>IN STOCK <span class="icon-arrow">&UpArrow;</span></th>
+        <th>CATEGORY <span class="icon-arrow">&UpArrow;</span></th>
+        <th>BRAND <span class="icon-arrow">&UpArrow;</span></th>
+        <th>RATING <span class="icon-arrow">&UpArrow;</span></th>
+        <th>DESCRIPTION <span class="icon-arrow">&UpArrow;</span></th>
+        <th>FLASH SALE <span class="icon-arrow">&UpArrow;</span></th>
+        <th>DATE ADDED <span class="icon-arrow">&UpArrow;</span></th>
+        <th>ACTIONS <span class="icon-arrow">&UpArrow;</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in products %}
+            <tr>
+              <td>{{product.id}}</td>
+              <td>
+                <img
+                  src="{{product.image}}"
+                  alt="{{product.name}}"
+                />
+              </td>
+              <td>{{product.name}}</td>
+              <td>{{settings.currency}}{{product.previous_price}}</td>
+              <td>{{settings.currency}}{{product.current_price}}</td>
+              <td>{{settings.currency}}{{product.shipping_fee}}</td>
+              <td>x{{product.stock}}</td>
+              <td class="product-cat">{{product.category}}</td>
+              <td>{{product.brand}}</td>
+              <td>{{product.rating}}</td>
+              <td>{{product.description}}</td>
+              <td>{{product.flash_sale}}</td>
+              <td>{{product.date_added}}</td>
+              <td>
+                <a href="update-product/{{product.id}}"><button class="edit primary-btn">Edit</button></a>
+                <a href="delete-product/{{product.id}}"><button class="delete primary-btn">Delete</button></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+</section>
+
+{% endblock %}

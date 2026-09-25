@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/admin-style.css')}}"
+    />
+    <link
+      rel="icon"
+      type="image/jpg"
+      href="{{url_for('static', filename='img/favicon.jpg')}}"
+    />
+
+    <title>{% block title %}{% endblock %}</title>
+  </head>
+  <body>
+    <aside class="sidebar" id="sidebar">
+        <button class="menu-btn menu-dismis-btn" id="menuDismisBtn" onclick="navBarToggleClose()">&times;</button>
+      <div class="logo">
+        <div class="logo-icon">V</div>
+        <span>Store<span>Admin</span></span>
+      </div>
+      <nav>
+        <p class="nav-title">MAIN</p>
+        <a href="admin-dashboard" class="nav-link" data-page="dashboard">
+          <span><i class="fas fa-dashboard"></i></span> Dashboard
+        </a>
+        <a href="admin-product" class="nav-link" data-page="products">
+          <span><i class="fas fa-box"></i></span> Products
+        </a>
+        <a href="admin-orders" class="nav-link" data-page="orders">
+          <span><i class="fas fa-shopping-cart"></i></span> Orders
+          <b class="badge">{{total_orders}}</b>
+        </a>
+        <a href="admin-customers" class="nav-link" data-page="customers">
+          <span><i class="fas fa-users"></i></span> Customers
+        </a>
+        <p class="nav-title">STORE</p>
+        <a href="admin-categories" class="nav-link" data-page="categories">
+          <span><i class="fas fa-tags"></i></span> Categories
+        </a>
+        <a href="admin-brands" class="nav-link" data-page="brands">
+          <span><i class="fas fa-tags"></i></span> Brands
+        </a>
+        <a href="admin-settings" class="nav-link" data-page="settings">
+          <span><i class="fas fa-cog"></i></span> Settings
+        </a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="admin-profile">
+          <div class="avatar">VT</div>
+          <div>
+            <strong>{{user.username}}</strong>
+            <small>Administrator</small>
+          </div>
+        </div>
+        <a href="logout"><button class="logout-btn">↪ Logout</button></a>
+        <a href="/"><button class="logout-btn">Go to home</button></a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <!-- Header -->
+      <header class="header">
+        <button class="menu-btn" id="menuBtn" onclick="navBarToggleOpen()">☰</button>
+        <div class="page-title">
+          <h1 id="pageTitle">{{settings.store_name}}</h1>
+          <p>Welcome back, {{user.username}} <i class="fas fa-smile"></i></p>
+        </div>
+        <div class="header-actions">
+          <div class="header-user">
+            <div class="avatar"></div>
+            <div>
+              <strong>{{user.username}}</strong>
+              <small>Admin</small>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %} {% for category, message in messages %} {% if
+        category=='error' %}
+        <div class="flash alert-error" role="alert" id="div_flash">
+          {{message}}
+          <!-- <button type="button" class="btn-error" onclick="removeFlash()">
+                            <span aria-hidden="true">&times;</span>
+                        </button> -->
+        </div>
+        {% else %}
+        <div id="div_flash2" class="flash alert-success" role="alert">
+          {{message}}
+          <!-- <button type="button" class="btn-success" onclick="removeFlash()">
+                            <span aria-hidden="true">&times;</span>
+                        </button> -->
+        </div>
+        {% endif %} {% endfor %} {% endif %} {% endwith %}
+      </div>
+
+      {% block body %} {% endblock %}
+    </main>
+
+    <script src="{{url_for('static', filename='js/admin.js')}}"></script>
+    <script src="{{url_for('static', filename='js/base.js')}}"></script>
+  </body>
+</html>

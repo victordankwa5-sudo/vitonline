@@ -1,0 +1,54 @@
+{% extends 'second-base.html' %}
+{% block title %}
+Profile
+{% endblock%}
+
+{% block body %}
+
+    <!-- LOGIN CARD -->
+    <div class="profile-card-1">
+        <!-- Logo -->
+        <div class="profile-img">
+            <div class="profile-picture">
+                <i class="fas fa-user"></i>
+            </div>
+            <h3>@{{user.username}}</h3>
+
+        </div>
+        <p class="subtitle">
+            Edit login details or <a href="edit-personal-info">Edit personal-info</a>
+        </p>
+
+        <form class="login-info" id="login-info" method="POST">
+            <!-- USERNAME -->
+            <div class="form-group">
+                <label for="username">
+                    Username
+                </label>
+                <div class="input-wrapper">
+                    <i class="fas fa-user"></i>
+                    <input type="text" name="username" id="username" placeholder="Enter username" value="{{user.username}}">
+                </div>
+            </div>
+            <!-- EMAIL -->
+            <div class="form-group">
+                <label for="email">
+                    Email Address
+                </label>
+                <div class="input-wrapper">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" name="email" id="email" placeholder="Enter your email address" value="{{user.email}}">
+                </div>
+            </div>
+            
+            <!-- submit btn-->
+            <button
+                type="submit"
+                class="btn"
+                id="loginBtn">
+                Update
+            </button>
+        </form>
+    </div>
+
+{% endblock %}

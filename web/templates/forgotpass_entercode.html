@@ -1,0 +1,30 @@
+{% extends 'base.html' %} {% block title %} Password recovery {% endblock %} {%
+block body%}
+
+<div class="circle one"></div>
+<div class="circle two"></div>
+<div class="login-card">
+  <form method="POST" class="input-wrapper parent-code-input" id="main-forgot-el">
+    <label for="code-entry" style="text-align: center">
+      <h1 id="input-el-label">ENTER 4-DIGIT CODE</h1> </label
+    ><br />
+    <i class="fas fa-key"></i>
+    <br />
+    <input
+      type="text"
+      name="code-entry"
+      id="code-input-el"
+      maxlength="4"
+      placeholder="1234"
+      required
+    /><br />
+    <div class="resend-code">
+        <span>Resend Code in(<i id="timer-el"></i>)</span>
+        <span><a href="#" hidden>send code</a></span>
+    </div>
+    <br />
+    <button type="submit" class="login-btn" id="get-code-btn">VERIFY</button>
+    </form>
+</div>
+
+{% endblock%}

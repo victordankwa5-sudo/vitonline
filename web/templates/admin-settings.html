@@ -1,0 +1,30 @@
+{% extends 'admin-base.html' %} {% block title %} Store Settings {% endblock %}
+{% block body %}
+<!-- Settings -->
+<form method="POST">
+
+    <section class="page" id="settings">
+      <div class="page-toolbar">
+        <div>
+          <h2>Store Settings</h2>
+          <p>Configure your e-commerce store.</p>
+        </div>
+      </div>
+      <div class="panel settings-panel">
+        <label>Store Name</label>
+        <input type="text" value="{{settings.store_name}}" name="store-name" required minlength="5"/>
+        <label>Store Email</label>
+        <input type="email" value="{{settings.store_email}}" name="store-email" required/>
+        <label>Store Phone</label>
+        <input type="text" value="{{settings.store_phone}}" name="store-phone" required/>
+        <label>Currency</label>
+        <select name="currency" required>
+          <option>₵</option>
+        </select>
+        <button type="submit" class="primary-btn">Save Changes</button>
+      </div>
+    </section>
+
+</form>
+
+{% endblock %}

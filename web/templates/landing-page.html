@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+      rel="icon"
+      type="image/jpg"
+      href="{{url_for('static', filename='img/favicon.jpg')}}"
+    />
+    <link rel="stylesheet" href="{{url_for('static', filename='css/landingpage.css')}}">
+    <title>VIT GLOBAL — Welcome</title>
+</head>
+<body>
+    <!-- Decorative background circles -->
+    <div class="circle one" aria-hidden="true"></div>
+    <div class="circle two" aria-hidden="true"></div>
+    <div class="circle three" aria-hidden="true"></div>
+
+    <!-- ========== HEADER / NAVIGATION ========== -->
+    <header class="header">
+        <div class="container">
+            <a href="#home" class="logo">{{settings.store_name}}</a>
+            <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav class="nav" id="main-nav">
+                {% if user.is_authenticated %}
+                <a href="/" class="nav-signup">Shop now</a>
+                <a href="#home">Home</a>
+                <a href="#services">Services</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+                {% else %}
+                <a href="login" class="nav-login">Login</a>
+                <a href="signup" class="nav-signup">Sign Up</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <!-- ========== HERO SECTION ========== -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">WELCOME TO VIT GLOBAL</h1>
+                <p class="hero-subtitle">
+                    Convenient access to quality IT products and solutions.
+                    Discover a modern platform designed to meet your IT needs,
+                    reliable, and fast delivery for every guest and customer.
+                </p>
+                <div class="hero-ctas">
+                    <a href="#services" class="btn">EXPLORE SERVICES</a>
+                    <a href="signup" class="btn btn-outline">GET STARTED</a>
+                </div>
+            </div>
+            <div class="hero-visual" aria-hidden="true">
+                <div class="floating-card card-1">
+                    <div class="fc-icon">✦</div>
+                    <span>Secure</span>
+                </div>
+                <div class="floating-card card-2">
+                    <div class="fc-icon">◈</div>
+                    <span>Fast</span>
+                </div>
+                <div class="floating-card card-3">
+                    <div class="fc-icon">◉</div>
+                    <span>Reliable</span>
+                </div>
+                <div class="hero-glow"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SERVICES SECTION ========== -->
+    <section class="services-section" id="services">
+        <div class="container">
+            <h2 class="section-title">OUR SERVICES</h2>
+            <p class="section-subtitle">Explore what VIT GLOBAL has to offer</p>
+            <div class="services-grid">
+                <article class="service-card">
+                    <div class="service-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+                            <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                            <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+                            <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+                        </svg>
+                    </div>
+                    <h3>Digital Products</h3>
+                    <p>Access a range of digital tools and resources designed to simplify everyday tasks and improve efficiency.</p>
+                    <a href="signup" class="btn btn-sm">Get Started</a>
+                </article>
+                <article class="service-card">
+                    <div class="service-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <circle cx="12" cy="12" r="9"/>
+                            <path d="M12 7v5l3 3"/>
+                        </svg>
+                    </div>
+                    <h3>Online Solutions</h3>
+                    <p>Discover convenient online solutions that help you connect, manage, and accomplish more from anywhere.</p>
+                    <a href="signup" class="btn btn-sm">Get Started</a>
+                </article>
+                <article class="service-card">
+                    <div class="service-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                    </div>
+                    <h3>Customer Services</h3>
+                    <p>Experience dedicated support and customer-focused services tailored to meet your needs with care.</p>
+                    <a href="signup" class="btn btn-sm">Get Started</a>
+                </article>
+                <article class="service-card">
+                    <div class="service-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                        </svg>
+                    </div>
+                    <h3>Business Solutions</h3>
+                    <p>Find professional business IT solutions that support growth, streamline operations, and deliver results.</p>
+                    <a href="signup" class="btn btn-sm">Get Started</a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== WHY CHOOSE VIT GLOBAL ========== -->
+    <section class="why-section" id="why">
+        <div class="container">
+            <h2 class="section-title">WHY BUY FROM VIT GLOBAL?</h2>
+            <p class="section-subtitle">Built for trust, simplicity, and results</p>
+            <div class="why-grid">
+                <article class="why-card">
+                    <div class="why-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <h3>Reliable</h3>
+                    <p>Count on a platform designed for consistency and dependability every time you visit.</p>
+                </article>
+                <article class="why-card">
+                    <div class="why-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <rect x="3" y="3" width="18" height="18" rx="2"/>
+                            <path d="M9 9h6v6H9z"/>
+                        </svg>
+                    </div>
+                    <h3>Easy to Use</h3>
+                    <p>Intuitive design and clear navigation so you can find what you need without friction.</p>
+                </article>
+                <article class="why-card">
+                    <div class="why-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5"/>
+                            <path d="M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <h3>Professional</h3>
+                    <p>A polished experience that reflects quality and attention to detail at every step.</p>
+                </article>
+                <article class="why-card">
+                    <div class="why-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                    </div>
+                    <h3>Customer Focused</h3>
+                    <p>Your needs come first. We prioritize clear communication and helpful support.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== HOW IT WORKS ========== -->
+    <section class="how-section" id="how">
+        <div class="container">
+            <h2 class="section-title">HOW IT WORKS</h2>
+            <p class="section-subtitle">Getting started is simple</p>
+            <div class="steps-flow">
+                <div class="step-item">
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <h3>Create an Account</h3>
+                        <p>Sign up in minutes and unlock access to the platform.</p>
+                    </div>
+                </div>
+                <div class="step-connector" aria-hidden="true"></div>
+                <div class="step-item">
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <h3>Explore Products</h3>
+                        <p>Browse available Products and find what fits your needs.</p>
+                    </div>
+                </div>
+                <div class="step-connector" aria-hidden="true"></div>
+                <div class="step-item">
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <h3>Choose What You Need</h3>
+                        <p>Select the options that work best for you.</p>
+                    </div>
+                </div>
+                <div class="step-connector" aria-hidden="true"></div>
+                <div class="step-item">
+                    <div class="step-number">04</div>
+                    <div class="step-content">
+                        <h3>Get Started</h3>
+                        <p>Begin using VIT GLOBAL and experience the difference.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== ABOUT VIT GLOBAL ========== -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-card">
+                <h2 class="section-title">ABOUT VIT GLOBAL</h2>
+                <p>
+                    VIT GLOBAL is a modern platform designed to give guests and customers
+                    a simple, convenient way to discover and access premium IT solutions.
+                    Whether you are exploring for the first time or returning for more,
+                    we aim to make every interaction clear, trustworthy, and efficient.
+                </p>
+                <p>
+                    Our focus is on delivering a professional IT products that helps you
+                    find solutions quickly and with confidence.
+                </p>
+                <a href="signup" class="btn">CREATE AN ACCOUNT</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FINAL CTA ========== -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-card">
+                <h2>READY TO GET STARTED?</h2>
+                <p>Create your account and discover what VIT GLOBAL has to offer.</p>
+                <div class="cta-buttons">
+                    <a href="signup" class="btn">CREATE ACCOUNT</a>
+                    <a href="login" class="btn btn-outline-light">LOGIN</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CONTACT SECTION ========== -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <h2 class="section-title">CONTACT</h2>
+            <p class="section-subtitle">We would love to hear from you</p>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="contact-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                    </div>
+                    <h3>Email</h3>
+                    <p class="placeholder-text">{{settings.store_email}}</p>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                    </div>
+                    <h3>Phone</h3>
+                    <p class="placeholder-text">{{settings.store_phone}}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#home" class="logo">VIT GLOBAL</a>
+                    <p>A modern platform for convenient access to quality services and solutions.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <a href="#home">Home</a>
+                    <a href="#services">Services</a>
+                    <a href="#about">About</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Account</h4>
+                    <a href="login">Login</a>
+                    <a href="signup">Sign Up</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 VIT GLOBAL. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile nav toggle
+        const toggle = document.querySelector('.nav-toggle');
+        const nav = document.getElementById('main-nav');
+        if (toggle && nav) {
+            toggle.addEventListener('click', () => {
+                const open = nav.classList.toggle('open');
+                toggle.setAttribute('aria-expanded', open);
+                toggle.classList.toggle('active', open);
+            });
+            nav.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    nav.classList.remove('open');
+                    toggle.classList.remove('active');
+                    toggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Intersection Observer for card entrance animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('.service-card, .why-card, .step-item, .contact-card, .about-card, .cta-card').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

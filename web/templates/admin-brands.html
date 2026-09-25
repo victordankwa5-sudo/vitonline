@@ -1,0 +1,25 @@
+{% extends 'admin-base.html' %} {% block title %} Admin Brands {% endblock %} {%
+block body %}
+<!-- Categories -->
+<section class="page" id="categories">
+  <div class="page-toolbar">
+    <div>
+      <h2>Brands</h2>
+      <p>Organize your products.</p>
+    </div>
+    <a href="add-brand"><button class="primary-btn" id="addProductBtn">+ Add Brand</button></a>
+  </div>
+  <div class="category-grid">
+    {% for brand in brands %}
+    <div class="category-card">
+      <span><i class="fas fa-{{brand.name}}"></i></span>
+      <div>
+        <h3>{{brand.name.capitalize()}}</h3>
+      </div><br>
+      <a href="delete-brand/{{brand.id}}"><button class="delete primary-btn">Delete</button></a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'second-base.html' %} {% block title %} Flash Sale {% endblock %} {%
+block body %}
+<div class="circle two"></div>
+<div class="circle one"></div>
+
+<span class="mobile-filter">
+  <select name="filter" id="mobile-filter">
+    <option value="all">All</option>
+    <option value="laptops">Laptops</option>
+    <option value="phones/tablets">Phones/Tablets</option>
+    <option value="accessories">Accessories</option>
+    <option value="desktop">Desktop</option>
+    <option value="peripharals">Peripharals</option>
+    <option value="gaming">Gaming</option>
+    <option value="sound">Sound</option>
+    <option value="security">Security</option>
+  </select>
+</span>
+
+<main class="product-detail">
+  <div id="product-detail">
+    <!-- Product details injected by python -->
+    {% for product in products %}
+      <div class="product-detail-card" id="product-detail-card" style="background-color: white;">
+        <span class="p-row"><i class="fas fa-tag" style="color: white; padding: 5px; font-size: 25px;"></i> <i class="discount-tag">-{{ round(((product.previous_price - product.current_price) / product.previous_price) * 100) }}%</i></span>
+        <img src="{{product.image}}" alt="{{product.name}}" />
+        <div>
+          <p>{{product.description}}</p>
+          <div hidden class="p-category">{{product.category}}</div>
+          <div class="price">{{settings.currency}}{{product.current_price}}</div>
+          {% if product.previous_price > product.current_price %}
+          <div class="info-row"><span class="previous-price">{{settings.currency}}{{product.previous_price}}</span></div>
+          {% endif %}
+          <div>
+            {% for i in range(5) %}
+              {% if i < product.rating %}
+                <i class="fa-solid fa-star" style="color: yellow;"></i>
+              {% else %}
+                <i class="fa-solid fa-star" style="color: gray;"></i>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <a href="view-product/{{product.id}}"><button class="btn btn-outline" style="margin-bottom: 10px;">View Product</button></a>
+          <button class="btn add-to-cart-btn" pid="{{product.id}}">Add to Cart</button>
+        </div>
+      </div>
+      {% endfor %}
+  </div>
+</main>
+
+{% endblock %}

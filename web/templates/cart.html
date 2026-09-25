@@ -1,0 +1,47 @@
+{% extends 'second-base.html' %} {% block title %} Cart {% endblock %} {% block
+body %}
+
+<div class="circle one"></div>
+<div class="circle two"></div>
+
+<main class="cart-page">
+  <div class="container">
+    {% if cart %}
+    <h1>Your Cart</h1>
+    <div id="cart-items">
+      {% for item in cart %}
+
+      <div class="cart-item">
+        <img src="{{item.product.image}}" alt="{{item.product.name}}" />
+        <div class="details">
+          <h3>{{item.product.name}}</h3>
+          <div class="price">GH₵{{item.product.current_price}}</div>
+        </div>
+        <div class="qty">
+          <button class="minus-cart-btn" pid="{{item.id}}">−</button>
+          <span id="item-quantity">{{item.quantity}}</span>
+          <button class="plus-cart-btn" pid="{{item.id}}">+</button>
+        </div>
+        <div style="font-weight: 700; min-width: 80px; text-align: right">
+          {{settings.currency}}{{ item.product.current_price * item.quantity }}
+        </div>
+        <button class="btn remove-cart-btn" pid="{{item.id}}">Remove</button>
+      </div>
+
+      {% endfor %}
+    </div>
+
+    <div class="cart-summary" id="cart-summary">
+      <p><span>Subtotal</span> <span class="subtotal">{{settings.currency}}{{amount}}</span></p>
+      <p><span>Shipping</span> <span>{{settings.currency}}200</span></p>
+      <p class="total"><span>Total</span> <span class="cart-total">{{settings.currency}}{{total}}</span></p>
+      <a href="checkout" class="btn" id="checkout-btn" style="align-content:center;">Proceed to Checkout</a>
+    </div>
+
+    {% else %}
+    <h3 style="text-align: center;">Your cart is empty</h3>
+    {% endif %}
+  </div>
+</main>
+
+{% endblock %}

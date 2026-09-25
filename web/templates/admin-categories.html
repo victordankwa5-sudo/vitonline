@@ -1,0 +1,71 @@
+{% extends 'admin-base.html' %} {% block title %} Category {% endblock %} {%
+block body %}
+<!-- Categories -->
+<section class="page" id="categories">
+  <div class="page-toolbar">
+    <div>
+      <h2>Categories</h2>
+      <p>Organize your products.</p>
+    </div>
+  </div>
+  <div class="category-grid">
+    <div class="category-card">
+      <span><i class="fas fa-laptop"></i></span>
+      <div>
+        <h3>Laptops</h3>
+        <p>{{num_laptops}} Products</p>
+      </div>
+    </div>
+    <div class="category-card">
+      <span><i class="fas fa-mobile-alt"></i></span>
+      <div>
+        <h3>Phones/Tablets</h3>
+        <p>{{num_phones_tablets}} Products</p>
+      </div>
+    </div>
+    <div class="category-card">
+      <span><i class="fas fa-desktop"></i></span>
+      <div>
+        <h3>Desktop</h3>
+        <p>{{num_desktop}} Products</p>
+      </div>
+    </div>
+    <div class="category-card">
+      <span><i class="fas fa-mouse"></i></span>
+      <div>
+        <h3>Peripharals</h3>
+        <p>{{num_peripharals}} Products</p>
+      </div>
+    </div>
+    <div class="category-card">
+      <span><i class="fas fa-volume-up"></i></span>
+      <div>
+        <h3>Accessories</h3>
+        <p>{{num_accessories}} Products</p>
+      </div>
+    </div>
+    <div class="category-card">
+      <span><i class="fa-solid fa-gamepad"></i></span>
+      <div>
+        <h3>Gaming</h3>
+        <p>{{num_gaming}} Products</p>
+      </div>
+    </div>
+    <div class="category-card">
+      <span><i class="fas fa-volume-up"></i></span>
+      <div>
+        <h3>Sound</h3>
+        <p>{{num_sound}} Products</p>
+      </div>
+    </div>
+    <div class="category-card">
+      <span><i class="fas fa-lock"></i></span>
+      <div>
+        <h3>Security</h3>
+        <p>{{num_security}} Products</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

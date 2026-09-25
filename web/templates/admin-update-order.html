@@ -1,0 +1,37 @@
+{% extends 'admin-base.html' %} {% block title %} Update order status {%
+endblock %} {% block body %}
+<div class="modal show">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div>
+        <h2 id="modalTitle">Update Order Status</h2>
+        <p>Select status below.</p>
+      </div>
+      <button class="close-btn" id="closeOrderModal">
+        ×
+      </button>
+    </div>
+    <form id="productForm" method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+        <label>Status</label>
+        <select id="productCategory" name="new-order-status">
+          <option>Pending</option>
+          <option>Shipped</option>
+          <option>Delivered</option>
+          <option>Canceled</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button
+          type="button"
+          class="cancel-btn"
+          id="cancelOrderModal"
+        >
+          Cancel
+        </button>
+        <button type="submit" class="primary-btn">Update Order</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
