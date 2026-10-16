@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, redirect, render_template, flash, url_for, request
 from flask_login import login_required, current_user
-from .models import Payment, Settings, Cart, Order, Product
+from .models import Payment, Settings, Cart, Order, Product, Revenue
 import os
 import requests
 from dotenv import load_dotenv
@@ -24,7 +24,7 @@ def checkout():
             
         for item in cart_detail:
             amount += item.product.current_price * item.quantity
-            total_shipping_fee += item.product.shipping_fee
+            total_shipping_fee += item.product.shipping_fee * item.quantity
             
         total = amount + total_shipping_fee
             
@@ -36,6 +36,7 @@ def checkout():
 
 
 PAYSTACK_SECRET = os.getenv("PAYSTACK_SECRET_KEY")
+BASE_URL = os.getenv('BASE_URL')
 HEADERS = {"Authorization": f"Bearer {PAYSTACK_SECRET}", "Content-Type": "application/json"}
 
 @pay.route('/api/pay/initialize', methods=['POST'])
@@ -45,7 +46,7 @@ def initialize():
         "email": body['email'],
         "amount": int(float(body['amount']) * 100),
         "currency": "GHS",
-        "callback_url": "https://yourdomain.com/success", # change to your live link
+        "callback_url": f"https://{BASE_URL}/success", # change to your live link
         "metadata": {"order_id": body.get('order_id', 'ORDER-1')}
     }
     r = requests.post("https://api.paystack.co/transaction/initialize", json=payload, headers=HEADERS)
@@ -76,12 +77,14 @@ def verify(reference):
             new_order.quantity = item.quantity
             new_order.price = item.product.current_price
             new_order.status = 'Pending'
-            new_order.payment_status = 'Pending'
+            new_order.payment_status = 'Paid'
             new_order.payment_id = reference
+            new_order.amount = amount
+            new_order.shipping_fee = shipping_fee
             new_order.total = total
+            customer_payment = Payment.query.filter_by(customer_link=current_user.id).first()
             new_order.product_link = item.product_link
             new_order.customer_link = item.customer_link
-            customer_payment = Payment.query.filter_by(customer_link=current_user.id).first()
             new_order.payment_link = customer_payment.id
             
             db.session.add(new_order)
@@ -90,6 +93,10 @@ def verify(reference):
             product.stock -= item.quantity
             
             db.session.delete(item)
+            
+            new_revenue = Revenue(amount=total)
+            db.session.add(new_revenue)
+            
             db.session.commit()
         
         flash(f"Order Paid: {data['data']['metadata']}", "success")

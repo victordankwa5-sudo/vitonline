@@ -1,10 +1,14 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, send_from_directory
 from flask_login import current_user, login_required
+from flask_mail import Message
 from werkzeug.utils import secure_filename
-from .models import Product, Order, Settings, Brands, User
-from . import db
+from .models import Product, Order, Settings, Brands, Notifications, User
+from . import db, mail
+import os
 from dotenv import load_dotenv
 load_dotenv()
+
+MAIL_USERNAME = os.environ.get('APP_MAIL_USERNAME')
 
 admin = Blueprint('admin', __name__)
 
@@ -92,22 +96,15 @@ def update_product(product_id):
             productName = request.form.get('product-name')
             previous_price = request.form.get('previous-price')
             current_price = request.form.get('current-price')
+            shipping_fee = request.form.get('shipping-fee')
             stock = request.form.get('product-stock')
             category = request.form.get('product-category')
-            description = request.form.get('product-des')
             flash_sale = request.form.get('flash-sale')
             print(flash_sale)
-            if flash_sale == 'on':
+            if flash_sale == 'ON':
                 flash_sale = True
             else:
                 flash_sale = False
-            
-            imageFile = request.files.get('image-file')
-            
-            filename = secure_filename(imageFile.filename)
-            filepath = f'./media/{filename}'
-            
-            imageFile.save(filepath)
             
             try:
                 Product.query.filter_by(id=product_id).update(dict(
@@ -117,15 +114,14 @@ def update_product(product_id):
                                                                 stock=stock,
                                                                 flash_sale=flash_sale,
                                                                 category=category,
-                                                                image=filepath,
-                                                                description=description
+                                                                shipping_fee=shipping_fee
                                                                 ))
                 db.session.commit()
                 flash('Product updated', 'success')
-                return redirect(url_for('admin.add_product'))
+                return redirect(url_for('admin_views.admin_products'))
             except Exception as e:
                 flash('Could not update product', 'error')
-                return redirect(url_for('admin.add_product'))
+                return redirect(url_for('admin_views.admin_products'))
             
         
         return render_template('admin-update-product.html', user=current_user, product=product, total_orders=total_orders, settings=settings)
@@ -141,10 +137,10 @@ def delete_product(product_id):
             db.session.delete(product_to_delete)
             db.session.commit()
             flash('Product deleted', 'success')
-            return redirect(url_for('admin.add_product'))
+            return redirect(url_for('admin_views.admin_products'))
         except Exception as e:
             flash('Item could not be deleted', 'error')
-        return redirect(url_for('admin.admin_products'))
+        return redirect(url_for('admin_views.admin_products'))
     else:
         flash('You are not an admin!', 'error')
         
@@ -158,23 +154,29 @@ def update_order(order_id):
         
         if request.method == 'POST':
             new_order_status = request.form.get('new-order-status')
+            msg_subject = 'Order status update'
+            customer_id = Order.query.filter_by(id=order_id).first()
+            
+            customer = User.query.filter_by(id = customer_id.customer_link)
+            email = customer.email
+            
+            
             
             try:
-                Order.query.filter_by(id=order_id).update(dict(status=new_order_status))
-                db.session.commit()
                 
                 order = Order.query.filter_by(id=order_id).first()
-                customer_id = order.customer_link
-                customer = User.query.filter_by(id=customer_id).first()
+                customer_pay_id = order.payment_id
+
+                Order.query.filter_by(payment_id=customer_pay_id).update(dict( status=new_order_status))
                 
-                # msg_subject = 'YOUR ORDER HAS BEEN CONFIRMED'
-                # msg_sender = os.environ.get('APP_MAIL_USERNAME')
-                # email = customer.email
+                db.session.commit()
                 
-                # msg = Message(subject=msg_subject, sender=msg_sender, recipients=[email])
-                # msg.body = f"Your order"
-                # mail.send(msg)
+                msg_body = f'Your order on VitTechStore with reference {order.payment_id} has been {new_order_status}.'
                 
+                msg = Message(subject=msg_subject, sender=MAIL_USERNAME, recipients=[email])
+                msg.body = f"{msg_body}"
+                mail.send(msg)
+
                 flash('Order status updated', 'success')
                 return redirect(url_for('admin_views.orders'))
             except Exception as e:
@@ -272,3 +274,22 @@ def delete_brand(brand_id):
             return redirect(url_for('admin_views.admin_brands'))
     else:
         flash('You are not an admin', 'error')
+
+@admin.route('/delete-notification/<int:notification_id>')
+@login_required
+def delete_notification(notification_id):
+    if current_user.id == 1:
+        notification = Notifications.query.filter_by(id=notification_id).first()
+        
+        try:
+            db.session.delete(notification)
+            db.session.commit()
+            
+            flash('Notification deleted')
+            return redirect(request.referrer)
+        except Exception as e:
+            flash(f'Notification not deleted {e}', 'error')
+            return redirect(request.referrer)
+    else:
+        flash('You are not an admin', 'error')
+        return redirect(request.referrer)

@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+  <head>
+    <link
+      rel="icon"
+      type="image/jpg"
+      href="{{url_for('static', filename='img/favicon.jpg')}}"
+    />
+    <title>Order #{{ order.payment_id }} - Print</title>
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        padding: 20px;
+        color: #000;
+      }
+      .invoice-box {
+        max-width: 800px;
+        margin: auto;
+        border: 1px solid #eee;
+        padding: 30px;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 2px solid #000;
+        padding-bottom: 15px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+      }
+      th {
+        background: #f8f9fa;
+      }
+      .total-row {
+        font-weight: bold;
+        background: #000;
+        color: #fff;
+      }
+      .btn-print {
+        background: #000;
+        color: #fff;
+        padding: 12px 25px;
+        border: none;
+        cursor: pointer;
+        margin-top: 20px;
+        border-radius: 5px;
+      }
+      @media print {
+        .btn-print {
+          display: none;
+        }
+        body {
+          padding: 0;
+        }
+        .invoice-box {
+          border: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="invoice-box">
+      <div class="header">
+        <div>
+          <h2>VITONLINE</h2>
+          <p>Order Invoice</p>
+        </div>
+        <div style="text-align: right">
+          <p><strong>Ref:</strong> {{ order.payment_id }}</p>
+          <p>
+            <strong>Date:</strong> {{ order.order_date.strftime('%d %b %Y') if
+            order.order_date else '' }}
+          </p>
+          <p><strong>Status:</strong> {{ order.status }}</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px">
+        <p><strong>Customer:</strong> {{ customer.username }}</p>
+        <p><strong>Order ID:</strong> {{ order.id }}</p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in order_detail %}
+          <tr>
+            <td>{{ item.product.name if item.product else item.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ settings.currency }}{{ item.product.current_price }}</td>
+            <td>
+              {{ settings.currency }}{{ item.product.current_price *
+              item.quantity }}
+            </td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="3" style="text-align: right">Subtotal</td>
+            <td>{{ settings.currency }}{{ order.amount }}</td>
+          </tr>
+          <tr>
+            <td colspan="3" style="text-align: right">Shipping Fee</td>
+            <td>{{ settings.currency }}{{ order.shipping_fee }}</td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="3" style="text-align: right">Total Paid</td>
+            <td>{{ settings.currency }}{{ order.total }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button class="btn-print" onclick="window.print()">
+        <i class="fas fa-print"></i> Print Order
+      </button>
+      <button
+        class="btn-print"
+        onclick="window.close()"
+        style="background: #ccc; color: #000; margin-left: 10px"
+      >
+        Close
+      </button>
+    </div>
+  </body>
+</html>

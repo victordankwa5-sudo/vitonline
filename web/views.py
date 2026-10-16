@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template, request, jsonify, flash, redirect, after_this_request, url_for
+from flask import Blueprint, render_template, request, jsonify, flash, redirect, after_this_request
 from flask_login import login_required, current_user
-from .models import Product, Cart, Payment, Order, User, Brands, Settings
+from .models import Product, Cart, Payment, Order, User, Brands, Settings, Notifications
 from . import db
 import json
 import random
@@ -13,7 +13,26 @@ def index():
         order = Order.query.filter_by(customer_link=current_user.id).first()
     else:
         order=0
-    products = Product.query.filter_by(flash_sale=True)
+    
+    flash_sale_products = Product.query.filter_by(flash_sale=True).all()
+    
+    all_products_id = []
+    for i in flash_sale_products:
+        all_products_id.append(i.id)
+    
+    selected_product_id = []
+    for id in range(6):
+        id = random.choice(all_products_id)
+        
+        while id in selected_product_id:
+            id = random.choice(all_products_id)
+        
+        selected_product_id.append(id)
+    
+    products = []
+    for id in selected_product_id:
+        product = Product.query.filter_by(id=id).first()
+        products.append(product)
     
     brands = Brands.query.order_by(Brands.name).all()
     settings = Settings.query.filter_by(id=1).first()
@@ -97,10 +116,12 @@ def cart():
     cart = Cart.query.filter_by(customer_link=current_user.id).all()
     settings = Settings.query.filter_by(id=1).first()
     amount = 0
+    shipping_fee = 0
     for item in cart:
         amount += item.product.current_price * item.quantity
+        shipping_fee += item.product.shipping_fee * item.quantity
     
-    return render_template("cart.html", user=current_user, cart_num = Cart.query.filter_by(customer_link=current_user.id).all() if current_user.is_authenticated else [], cart=cart, amount=amount, total=amount+200, order=order, settings=settings)
+    return render_template("cart.html", user=current_user, cart_num = Cart.query.filter_by(customer_link=current_user.id).all() if current_user.is_authenticated else [], cart=cart, amount=amount, total=amount+shipping_fee, order=order, settings=settings, shipping_fee=shipping_fee)
 
 @views.route('/plus-cart', methods=['GET', 'POST'])
 @login_required
@@ -118,20 +139,23 @@ def plus_cart():
         
         cart_id = cart_id['cart_id']
         cart_item = Cart.query.get(cart_id)
-        cart_item.quantity += 1
+        if cart_item.product.stock > cart_item.quantity:
+            cart_item.quantity += 1
         db.session.commit()
         
         cart = Cart.query.filter_by(customer_link=current_user.id).all()
         
         amount = 0
-        
+        shipping_fee = 0
         for item in cart:
             amount += item.product.current_price * item.quantity
+            shipping_fee += item.product.shipping_fee * item.quantity
         
         data = {
             'quantity': cart_item.quantity,
             'amount': amount,
-            'total': amount + 200,
+            'shipping_fee': shipping_fee,
+            'total': amount + shipping_fee,
             'item_total': cart_item.product.current_price * cart_item.quantity
         }
         
@@ -156,20 +180,23 @@ def minus_cart():
         
         cart_id = cart_id['cart_id']
         cart_item = Cart.query.get(cart_id)
-        cart_item.quantity -= 1
+        if cart_item.quantity > 1 :
+            cart_item.quantity -= 1
         db.session.commit()
         
         cart = Cart.query.filter_by(customer_link=current_user.id).all()
         
         amount = 0
-        
+        shipping_fee = 0
         for item in cart:
             amount += item.product.current_price * item.quantity
+            shipping_fee += item.product.shipping_fee * item.quantity
         
         data = {
             'quantity': cart_item.quantity,
             'amount': amount,
-            'total': amount + 200,
+            'shipping_fee': shipping_fee,
+            'total': amount + shipping_fee,
             'item_total': cart_item.product.current_price * cart_item.quantity
         }
         
@@ -200,21 +227,21 @@ def remove_cart():
         cart = Cart.query.filter_by(customer_link=current_user.id).all()
         
         amount = 0
-        
+        shipping_fee =0
         for item in cart:
             amount += item.product.current_price * item.quantity
+            shipping_fee += item.product.shipping_fee
         
         data = {
             'quantity': cart_item.quantity,
             'amount': amount,
-            'total': amount + 200,
+            'total': amount + shipping_fee,
             'item_total': cart_item.product.current_price * cart_item.quantity
         }
         
         return jsonify(data)
     
     return jsonify({})
-
 
 @views.route('/orders')
 @login_required
@@ -228,7 +255,7 @@ def orders():
 def search():
     if request.method == 'POST':
         search_query = request.form.get('search')
-        items = Product.query.filter(Product.name.ilike(f'%{search_query}%')).all()
+        items = Product.query.filter(Product.name.ilike(f'%{search_query}%')).all() or Product.query.filter(Product.category.ilike(f'%{search_query}%')).all()
         settings = Settings.query.filter_by(id=1).first()
         
         return render_template('search.html', items=items, cart_num = Cart.query.filter_by(customer_link=current_user.id).all() if current_user.is_authenticated else [], user=current_user, settings=settings)
@@ -319,3 +346,40 @@ def brand(brand_name):
     settings = Settings.query.filter_by(id=1).first()
     
     return render_template('brands.html', products=brand_items, user=current_user, settings=settings)
+
+@views.route('/privacy')
+def privacy_policy():
+    settings = Settings.query.filter_by(id = 1).first()
+    
+    return render_template('privacy-policy.html', user = current_user, settings = settings)
+
+@views.route('/terms')
+def terms():
+    settings = Settings.query.filter_by(id = 1).first()
+    
+    return render_template('terms.html', user = current_user, settings = settings)
+
+@views.route('/contact', methods=['GET', 'POST'])
+def contact():
+    settings = Settings.query.filter_by(id = 1).first()
+    
+    if request.method == 'POST':
+        customer_name = request.form.get('name')
+        customer_phone = request.form.get('phone')
+        message = request.form.get('message')
+        
+        try:
+            new_notification = Notifications()
+            new_notification.customer_name = customer_name
+            new_notification.customer_phone = customer_phone
+            new_notification.message = message
+            
+            db.session.add(new_notification)
+            db.session.commit()
+            flash('Your message has been sent our team will see to your need for you.')
+            return redirect(request.referrer)
+        except Exception as e:
+            flash('Sorry! We failed to send your message.', 'error')
+            return redirect(request.referrer)
+    
+    return render_template('contact.html', user = current_user, settings = settings)

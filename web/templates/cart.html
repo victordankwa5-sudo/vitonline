@@ -15,7 +15,7 @@ body %}
         <img src="{{item.product.image}}" alt="{{item.product.name}}" />
         <div class="details">
           <h3>{{item.product.name}}</h3>
-          <div class="price">GH₵{{item.product.current_price}}</div>
+          <div class="price">{{settings.currency}}{{item.product.current_price}}</div>
         </div>
         <div class="qty">
           <button class="minus-cart-btn" pid="{{item.id}}">−</button>
@@ -33,7 +33,7 @@ body %}
 
     <div class="cart-summary" id="cart-summary">
       <p><span>Subtotal</span> <span class="subtotal">{{settings.currency}}{{amount}}</span></p>
-      <p><span>Shipping</span> <span>{{settings.currency}}200</span></p>
+      <p><span>Shipping</span> <span class="total-shipping-fee">{{settings.currency}}{{shipping_fee}}</span></p>
       <p class="total"><span>Total</span> <span class="cart-total">{{settings.currency}}{{total}}</span></p>
       <a href="checkout" class="btn" id="checkout-btn" style="align-content:center;">Proceed to Checkout</a>
     </div>

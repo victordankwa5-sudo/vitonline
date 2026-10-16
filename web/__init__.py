@@ -34,14 +34,12 @@ def create_app():
     from .auth import auth
     from .admin import admin
     from .admin_views import admin_views
-    # from .payment import payment
     from .paystack import pay
     
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(admin, url_prefix='/')
     app.register_blueprint(admin_views, url_prefix='/')
-    # app.register_blueprint(payment, url_prefix='/')
     app.register_blueprint(pay, url_prefix='/')
     
     from .models import User

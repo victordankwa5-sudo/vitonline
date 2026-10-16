@@ -1,22 +1,9 @@
-function navBarToggleOpen() {
-  const sideBar = document.getElementById("sidebar");
-  sideBar.style.display = "flex";
-  sideBar.style.transform = "translateX(0%)";
-  sideBar.style.zIndex = "2000";
-  sideBar.style.transition = "0.3s";
-}
-function navBarToggleClose() {
-  const sideBar = document.getElementById("sidebar");
-  sideBar.style.display = "flex";
-  sideBar.style.transform = "translateX(-100%)";
-  sideBar.style.transition = "0.3s";
-}
-
-function hideProductForm() {
-  const productForm = document.getElementById("productModal");
-  productForm.style.display = "none";
-  window.location.href = "/admin-product";
-}
+const activePage = window.location.pathname;
+const navLinks = document.querySelectorAll("nav a").forEach((link) => {
+  if (link.href.includes(`${activePage}`)) {
+    link.classList.add("active");
+  }
+});
 
 if (
   window.location.pathname === "/admin-product" ||
@@ -24,7 +11,7 @@ if (
 ) {
   const search = document.getElementById("searchProduct"),
     table_rows = document.querySelectorAll("tbody tr"),
-    table_head = document.querySelectorAll("thead th"),
+    table_head = document.querySelectorAll("thead tr th"),
     cat_sorter = document.getElementById("categoryFilter"),
     sort_row = document.querySelectorAll(".product-cat");
 
@@ -40,23 +27,7 @@ if (
     });
   };
 
-  cat_sorter.addEventListener("input", sortTableCat);
-
-  function sortTableCat() {
-    sort_row.forEach((row, i) => {
-      let table_data = row.textContent.toLowerCase(),
-        search_data = cat_sorter.value.toLowerCase();
-
-        if (search_data === 'all') {
-            row.parentNode.classList.remove('hide')
-        }
-        else {
-            row.parentNode.classList.toggle("hide", table_data.indexOf(search_data) < 0);
-            row.parentNode.style.setProperty("--delay", i / 25 + "s");
-        }
-    });
-  }
-
+  
   table_head.forEach((head, i) => {
     let sort_asc = true;
     head.onclick = () => {
@@ -88,25 +59,56 @@ if (
             [column].textContent.toLowerCase();
 
         return sort_asc
-          ? first_row < second_row
-            ? 1
-            : -1
+        ? first_row < second_row
+        ? 1
+        : -1
           : first_row < second_row
             ? -1
             : 1;
-      })
+          })
       .map((sorted_row) =>
         document.querySelector("tbody").appendChild(sorted_row),
-      );
+    );
+  }
+  
+  cat_sorter.addEventListener("input", sortTableCat);
+
+  function sortTableCat() {
+    sort_row.forEach((row, i) => {
+      let table_data = row.textContent.toLowerCase(),
+        search_data = cat_sorter.value.toLowerCase();
+
+        if (search_data === 'all') {
+            row.parentNode.classList.remove('hide')
+        }
+        else {
+            row.parentNode.classList.toggle("hide", table_data.indexOf(search_data) < 0);
+            row.parentNode.style.setProperty("--delay", i / 25 + "s");
+        }
+    });
   }
 }
+function navBarToggleOpen() {
+  const sideBar = document.getElementById("sidebar");
+  sideBar.style.display = "flex";
+  sideBar.style.transform = "translateX(0%)";
+  sideBar.style.zIndex = "2000";
+  sideBar.style.transition = "0.3s";
+}
+function navBarToggleClose() {
+  const sideBar = document.getElementById("sidebar");
+  sideBar.style.display = "flex";
+  sideBar.style.transform = "translateX(-100%)";
+  sideBar.style.transition = "0.3s";
+}
 
-const activePage = window.location.pathname;
-const navLinks = document.querySelectorAll("nav a").forEach((link) => {
-  if (link.href.includes(`${activePage}`)) {
-    link.classList.add("active");
-  }
-});
+function hideProductForm() {
+  const productForm = document.getElementById("productModal");
+  productForm.style.display = "none";
+  window.location.href = "/admin-product";
+}
+
+
 
 if (window.location.pathname.includes("update-product")) {
   const closeModal = document.getElementById("closeModal");

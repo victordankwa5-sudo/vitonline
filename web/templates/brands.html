@@ -32,7 +32,7 @@ block body %}
           <div class="info-row"><span class="previous-price">{{settings.currency}}{{product.previous_price}}</span></div>
           {% endif %}
           <button class="btn btn-outline btn-view-brand" style="margin-bottom: 10px;" pid="{{product.id}}">View Product</button>
-          <button class="btn add-to-cart-btn" pid="{{product.id}}">Add to Cart</button>
+          <button class="btn add-to-cart-btn" pid="{{product.id}}">{% if user.is_authenticated %}Add to Cart{% else %}Please Login{% endif %}</button>
         </div>
       </div>
       {% endfor %}

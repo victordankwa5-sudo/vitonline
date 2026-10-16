@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, flash, redirect, url_for
+from flask import Blueprint, render_template, flash, redirect, url_for, request
 from flask_login import login_required, current_user
-from.models import Order, User, Product, Brands, Settings
+from .models import Order, User, Product, Brands, Settings, Notifications, Revenue
+from datetime import datetime
 
 admin_views = Blueprint('admin_views', __name__)
 
@@ -13,11 +14,27 @@ def admin_index():
         orders = Order.query.order_by(Order.id).all()
         customers = User.query.order_by(User.id).all()
         settings = Settings.query.filter_by(id = 1).first()
+        revenue = Revenue.query.order_by(Revenue.date).all()
+        
+        total_revenue = 0
+        for amount in revenue:
+            total_revenue += amount
+        
+        month_rev = Revenue.query.order_by(Revenue.date).all()
+        
+        current_revenue = 0
+        for rev in month_rev:
+            if rev.date.strftime('%b') == datetime.today().strftime('%b'):
+                current_revenue += rev.amount
+                
+        this_month_percentage = 0
+        if current_revenue and total_revenue:
+            this_month_percentage = round((current_revenue / total_revenue) * 100)
         
         total_products = len(products)
         total_orders = len(orders)
         total_customers = len(customers)
-        return render_template('admin-dashboard.html', user=current_user, total_products=total_products, total_orders=total_orders, total_customers=total_customers, orders=orders, settings=settings)
+        return render_template('admin-dashboard.html', user=current_user, total_products=total_products, total_orders=total_orders, total_customers=total_customers, orders=orders, settings=settings, total_revenue=total_revenue, months_percentage=this_month_percentage)
     else:
         flash("You are not an admin!", "error")
         return redirect(url_for("views.index"))
@@ -53,6 +70,21 @@ def orders():
     else:
         flash('You are not an admin!', 'error')
         return redirect(url_for('views.index'))
+
+@admin_views.route('/admin/orders/<int:order_id>/print')
+@login_required # your admin check
+def admin_print_order(order_id):
+    if current_user.id == 1:
+        settings = Settings.query.filter_by(id = 1).first()
+        order = Order.query.get_or_404(order_id)
+        
+        customer = User.query.filter_by(id=order.customer_link).first()
+        
+        # If your cart_detail is related to order
+        order_details = Order.query.filter_by(payment_id=order.payment_id).all()
+        return render_template('admin_print_order.html', order=order, order_detail=order_details, settings=settings, customer=customer)
+    else:
+        flash('You are not an admin!', 'error')
         
 @admin_views.route('/admin-customers')
 @login_required
@@ -121,3 +153,17 @@ def admin_brands():
         return render_template('admin-brands.html', user=current_user, brands=brands, total_orders=total_orders, settings=settings)
     else:
         flash('You are not an admin!', 'error')
+
+@admin_views.route('/notifications')
+@login_required
+def notifications():
+    if current_user.id == 1:
+        settings = Settings.query.filter_by(id=1).first()
+        notifications = Notifications.query.order_by(Notifications.id).all()
+        num_orders = Order.query.order_by(Order.id).all()
+        total_orders = len(num_orders)
+        
+        return render_template('admin-notifications.html', user=current_user, settings=settings, notifications=notifications, total_orders=total_orders)
+    else:
+        flash('You are not an admin!', 'error')
+        return redirect(request.referrer)

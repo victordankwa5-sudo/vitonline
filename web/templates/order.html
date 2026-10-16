@@ -26,7 +26,7 @@ View orders
           <span id="item-quantity">x{{customer_order.quantity}}</span>
         </div>
         <div style="font-weight: 700; min-width: 80px; text-align: right">
-          {{settings.currency}}{{ customer_order.product.current_price * customer_order.quantity }}
+          {{settings.currency}}{{ customer_order.total }}
         </div>
         {% if customer_order.status == 'Pending' %}
         <div style="font-weight: 700; min-width: 80px; text-align: right; background-color: rgba(255, 208, 0, 0.623); padding: .5rem; border-radius: 15px;">

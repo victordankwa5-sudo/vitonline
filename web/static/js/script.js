@@ -168,10 +168,15 @@ const add_to_cart = document
     btn.addEventListener("click", (event) => {
       var id = btn.getAttribute("pid").toString();
       var cart_quantity = document.querySelectorAll("#cart-count");
+      
+      fetch("/add-to-cart", {
+          method: "POST",
+          body: JSON.stringify({ product_id: id }),
+        });
 
       fetch("/add-to-cart")
-        .then((response) => response.json())
-        .then((json) => {
+      .then((response) => response.json())
+      .then((json) => {
           cart_quantity.forEach((qt) => {
             qt.textContent = json.new_cart_quantity;
           });
@@ -181,11 +186,8 @@ const add_to_cart = document
             btn.textContent = "Add to cart";
             btn.style.background = "linear-gradient(135deg, #6366f1, #06b6d4)";
           }, 3000);
-        });
 
-      fetch("/add-to-cart", {
-        method: "POST",
-        body: JSON.stringify({ product_id: id }),
+
       });
     });
   });
@@ -199,20 +201,23 @@ const plus_cart_btn = document
       var item_total = btn.parentNode.parentNode.children[3];
       var subtotal = document.querySelector(".subtotal");
       var cart_total = document.querySelector(".cart-total");
-
-      fetch("/plus-cart")
-        .then((response) => response.json())
-        .then((json) => {
-          quantity.textContent = json.quantity;
-          item_total.textContent = "$" + json.item_total + ".0";
-          subtotal.textContent = "$" + json.amount + ".0";
-          cart_total.textContent = "$" + json.total + ".0";
-        });
+      var shipping_fee = document.querySelector(".total-shipping-fee")
 
       fetch("/plus-cart", {
         method: "POST",
         body: JSON.stringify({ cart_id: id }),
       });
+
+      fetch("/plus-cart")
+      .then((response) => response.json())
+      .then((json) => {
+          quantity.textContent = json.quantity;
+          item_total.textContent = "₵" + json.item_total + ".0";
+          subtotal.textContent = "₵" + json.amount + ".0";
+          cart_total.textContent = "₵" + json.total + ".0";
+          shipping_fee.textContent = "₵" + json.shipping_fee + ".0";
+        });
+        
     });
   });
 
@@ -225,20 +230,24 @@ const minus_cart_btn = document
       var item_total = btn.parentNode.parentNode.children[3];
       var subtotal = document.querySelector(".subtotal");
       var cart_total = document.querySelector(".cart-total");
+      var shipping_fee = document.querySelector(".total-shipping-fee")
 
-      fetch("/minus-cart")
-        .then((response) => response.json())
-        .then((json) => {
-          quantity.textContent = json.quantity;
-          item_total.textContent = "$" + json.item_total + ".0";
-          subtotal.textContent = "$" + json.amount + ".0";
-          cart_total.textContent = "$" + json.total + ".0";
-        });
 
       fetch("/minus-cart", {
         method: "POST",
         body: JSON.stringify({ cart_id: id }),
       });
+
+      fetch("/minus-cart")
+        .then((response) => response.json())
+        .then((json) => {
+          quantity.textContent = json.quantity;
+          item_total.textContent = "₵" + json.item_total + ".0";
+          subtotal.textContent = "₵" + json.amount + ".0";
+          cart_total.textContent = "₵" + json.total + ".0";
+          shipping_fee.textContent = "₵" + json.shipping_fee + ".0";
+        });
+
     });
   });
 
@@ -249,20 +258,21 @@ const remove_cart_btn = document
       var id = btn.getAttribute("pid").toString();
       var item_to_remove = btn.parentNode;
 
-      fetch("/remove-cart")
-        .then((response) => response.json())
-        .then((json) => {
-          subtotal.textContent = "$" + json.amount + ".0";
-          cart_total.textContent = "$" + json.total + ".0";
-          item_to_remove.remove();
-        });
-
       fetch("/remove-cart", {
         method: "POST",
         body: JSON.stringify({ cart_id: id }),
       }).then((_res) => {
         window.location.href = "/cart";
       });
+
+      fetch("/remove-cart")
+        .then((response) => response.json())
+        .then((json) => {
+          subtotal.textContent = "₵" + json.amount + ".0";
+          cart_total.textContent = "₵" + json.total + ".0";
+          item_to_remove.remove();
+        });
+
     });
   });
 

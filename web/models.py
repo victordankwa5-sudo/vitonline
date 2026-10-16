@@ -72,6 +72,8 @@ class Wishlist(db.Model):
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     quantity = db.Column(db.Integer, nullable=False)
+    amount = db.Column(db.Float)
+    shipping_fee = db.Column(db.Float)
     total = db.Column(db.Float, nullable=False)
     price = db.Column(db.Float, nullable=False)
     status = db.Column(db.String(100), nullable=False)
@@ -128,3 +130,20 @@ class Brands(db.Model):
     
     def __str__(self):
         return '<Brands %r>' % self.id
+
+class Notifications(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    customer_name = db.Column(db.String(100))
+    customer_phone = db.Column(db.String(20))
+    message = db.Column(db.String(10000))
+    
+    def __str__(self):
+        return '<Notifications %r>' % self.id
+    
+class Revenue(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.DateTime(timezone=True), default=func.now())
+    amount = db.Column(db.Float, nullable=False)
+    
+    def __str__(self):
+        return '<Revenue %r>' % self.id

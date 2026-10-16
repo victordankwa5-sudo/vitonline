@@ -1,0 +1,34 @@
+{% extends 'admin-base.html' %} {% block title %} Admin Dashboard {% endblock %}
+{% block body %}
+<!-- Dashboard Page -->
+<section class="page">
+  {% if notifications %}
+    <div class="notification-list">
+        {% for notification in notifications %}
+
+        <div class="notification">
+          <div class="notification-header">
+            <strong><i>from: </i>{{notification.customer_name}}</strong>
+            <strong><i>phone: </i>{{notification.customer_phone}}</strong>
+          </div>
+          <div>
+            <p>
+                {{notification.message}}
+            </p>
+          </div>
+          <a href="delete-notification/{{notification.id}}" class="primary-btn delete-notification delete">Delete</a>
+        </div>
+
+        {% endfor %}
+    </div>
+  </div>
+  {% else %}
+    <div class="empty-state">
+      <div><i class="fas fa-shopping-cart"></i></div>
+      <h3>No Notifications yet</h3>
+      <p>Customer concerned notifications will appear here once customer sends you a notification.</p>
+    </div>
+    {% endif %}
+</section>
+
+{% endblock %}

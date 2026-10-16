@@ -13,11 +13,7 @@ block body %}
     <div class="product-toolbar">
       <div class="search-box">
         <i class="fas fa-search"></i>
-        <input
-          type="text"
-          id="searchProduct"
-          placeholder="Search orders"
-        />
+        <input type="text" id="searchProduct" placeholder="Search orders" />
       </div>
       <!-- <select id="categoryFilter">
         <option value="all">All</option>
@@ -31,21 +27,21 @@ block body %}
       <table>
         <thead>
           <tr>
-            <th>ID <span class="icon-arrow">&Uparrow;</span></th>
-            <th>Order Date <span class="icon-arrow">&Uparrow;</span></th>
-            <th>Fullname <span class="icon-arrow">&Uparrow;</span></th>
-            <th>Momo Name <span class="icon-arrow">&Uparrow;</span></th>
-            <th>Items <span class="icon-arrow">&Uparrow;</span></th>
-            <th>Image <span class="icon-arrow">&Uparrow;</span></th>
-            <th>Total <span class="icon-arrow">&Uparrow;</span></th>
-            <th>Phone <span class="icon-arrow">&Uparrow;</span></th>
-            <th>Network <span class="icon-arrow">&Uparrow;</span></th>
-            <th>Payment id <span class="icon-arrow">&Uparrow;</span></th>
-            <th>Region <span class="icon-arrow">&Uparrow;</span></th>
-            <th>Town <span class="icon-arrow">&Uparrow;</span></th>
-            <th>Address <span class="icon-arrow">&Uparrow;</span></th>
-            <th>Status <span class="icon-arrow">&Uparrow;</span></th>
-            <th>Action <span class="icon-arrow">&Uparrow;</span></th>
+            <th>ID <span class="icon-arrow">&UpArrow;</span></th>
+            <th>Order Date <span class="icon-arrow">&UpArrow;</span></th>
+            <th>Fullname <span class="icon-arrow">&UpArrow;</span></th>
+            <th>Momo Name <span class="icon-arrow">&UpArrow;</span></th>
+            <th>Items <span class="icon-arrow">&UpArrow;</span></th>
+            <th>Image <span class="icon-arrow">&UpArrow;</span></th>
+            <th>Total <span class="icon-arrow">&UpArrow;</span></th>
+            <th>Phone <span class="icon-arrow">&UpArrow;</span></th>
+            <th>Network <span class="icon-arrow">&UpArrow;</span></th>
+            <th>Payment id <span class="icon-arrow">&UpArrow;</span></th>
+            <th>Region <span class="icon-arrow">&UpArrow;</span></th>
+            <th>Town <span class="icon-arrow">&UpArrow;</span></th>
+            <th>Address <span class="icon-arrow">&UpArrow;</span></th>
+            <th>Status <span class="icon-arrow">&UpArrow;</span></th>
+            <th>Action <span class="icon-arrow">&UpArrow;</span></th>
           </tr>
         </thead>
         <tbody>
@@ -119,8 +115,16 @@ block body %}
               {% endif %}
             </td>
             <td>
+              <a
+                href="/admin/orders/{{ order.id }}/print"
+                target="_blank"
+                class="primary-btn"
+                style="background: #000; color: #fff; text-decoration: none;"
+              >
+                <i class="fas fa-print"></i> Print
+              </a>
               <a href="update-order-status/{{order.id}}"
-                ><button class="edit primary-btn">Update</button></a
+                ><button class="edit primary-btn" style="margin-top: 20px;">Update</button></a
               >
             </td>
           </tr>

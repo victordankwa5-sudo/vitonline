@@ -74,6 +74,7 @@
       <div class="form-group">
         <label>Category</label>
         <select id="productCategory" name="product-category">
+          <option>{{product.category}}</option>
           <option>Laptops</option>
           <option>Phones/Tablets</option>
           <option>Accessories</option>
@@ -83,20 +84,6 @@
           <option>Sound</option>
           <option>Security</option>
         </select>
-      </div>
-      <div class="form-group">
-        <label>Product Image URL</label>
-        <input type="file" id="image-file" name="image-file" required/>
-      </div>
-      <div class="form-group">
-        <label>Description</label>
-        <textarea
-          id="productDescription"
-          name="product-des"
-          minlength="20"
-          maxlength="60"
-          placeholder="{{product.description}}"
-        ></textarea>
       </div>
       <div class="flash-sale-check">
         <label for="flash-sale">Flash sale</label>

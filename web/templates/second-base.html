@@ -18,15 +18,101 @@
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
-    />
-    <!-- Font Awesome Icons -->
-    <link
+      />
+      <!-- Font Awesome Icons -->
+      <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    />
-    <title>{% block title %}{% endblock %}</title>
-  </head>
-  <body>
+      />
+      <title>{% block title %}{% endblock %}</title>
+    </head>
+    <body>
+    
+     <header class="header">
+          <div class="container nav-container">
+            <nav class="nav" id="nav">
+              <img
+                src="{{url_for('static', filename='img/favicon.jpg')}}"
+                alt="logo"
+              />
+              <p>
+                <select name="filter" id="filter" style="display: none">
+                  <option value="all">All</option>
+                  <option value="laptops">Laptops</option>
+                  <option value="phones/tablets">Phones/Tablets</option>
+                  <option value="accessories">Accessories</option>
+                  <option value="desktop">Desktop</option>
+                  <option value="peripharals">Peripharals</option>
+                  <option value="gaming">Gaming</option>
+                  <option value="sound">Sound</option>
+                  <option value="security">Security</option>
+                </select>
+              </p>
+              <a href="/"><i class="fas fa-home"></i> Home</a>
+              <a href="products"><i class="fas fa-box"></i> Products</a>
+              <a href="/about-us" target="_blank"><i class="fas fa-info-circle"></i> About Us</a>
+              {% if not user.is_authenticated %}
+              <a href="login">Login</a>
+              <a href="signup">Signup</a>
+              {% endif %}
+            </nav>
+            <div class="back-btn-container" style="display: none">
+              <!-- button is injected by javascript -->
+            </div>
+    
+            <button
+              class="menu-btn nav-menu-btn"
+              id="menuBtn"
+              onclick="navBarToggleOpen()"
+            >
+              ☰
+            </button>
+            <form
+              class="search-box"
+              method="POST"
+              role="search"
+              ,
+              action="/search"
+              style="display: none"
+              id="search-box"
+            >
+              <input
+                name="search"
+                class="search-input"
+                type="text"
+                placeholder="search on vit"
+              />
+              <button type="submit" class="search-btn">
+                <i class="fas fa-search"></i>
+              </button>
+            </form>
+            <div class="header-logo">
+              {% if user.is_authenticated %}
+              <a href="cart"
+                ><i class="fas fa-shopping-cart"></i>
+                <span id="cart-count">{{cart_num | length}}</span>
+              </a>
+              {% endif %}
+
+              {% if not user.is_authenticated %}
+              <i hidden></i>
+              {% endif %}
+
+              <button class="btn-show-dropdown">
+                <i class="fas fa-user"></i> <i class="fas fa-arrow-down"></i>
+              </button>
+              <button class="btn-hide-dropdown">
+                <i class="fas fa-user"></i> <i class="fas fa-arrow-up"></i>
+              </button>
+              <img
+                class="mobile-logo"
+                src="{{url_for('static', filename='img/favicon.jpg')}}"
+                alt="logo"
+              />
+            </div>
+          </div>
+     </header>
+
     <aside class="sidebar" id="sidebar">
       <button
         class="menu-btn menu-dismis-btn"
@@ -42,7 +128,6 @@
         </a>
       </div>
       <nav>
-        {% if user.is_authenticated%}
         <p class="nav-title">{{user.username}}</p>
         <a href="/" class="nav-link">
           <span><i class="fas fa-home"></i></span> Home
@@ -50,6 +135,7 @@
         <a href="products" class="nav-link">
           <span><i class="fas fa-box"></i></span> Products
         </a>
+        {% if user.is_authenticated %}
         <a href="cart" class="nav-link" data-page="orders">
           <span><i class="fas fa-shopping-cart"></i></span>Cart
           <b class="badge" id="cart-count">{{ cart_num | length }}</b>
@@ -57,14 +143,16 @@
         <a href="orders" class="nav-link">
           <span><i class="fas fa-box-open"></i></span> Orders
         </a>
-        <a href="/about-us" class="nav-link">
+        {% endif %}
+        <a href="/about-us" target="_blank" class="nav-link">
           <span><i class="fas fa-info-circle"></i></span> About Us
         </a>
         {% if user.id == 1 %}
         <a href="admin-dashboard" class="nav-link" data-page="customers">
           <span><i class="fas fa-user-shield"></i></span> Admin
         </a>
-        {% endif %} {% else %}
+        {% endif %}
+        {% if not user.is_authenticated %}
         <a href="login" class="nav-link">
           <span><i class="fas fa-sign-in-alt"></i></span> Login
         </a>
@@ -80,97 +168,19 @@
       {% endif %}
     </aside>
 
-    <header class="header">
-      <div class="container nav-container">
-        <nav class="nav" id="nav">
-          <img
-            src="{{url_for('static', filename='img/favicon.jpg')}}"
-            alt="logo"
-          />
-          {% if user.is_authenticated %}
-          <p>
-            <select name="filter" id="filter" style="display: none">
-              <option value="all">All</option>
-              <option value="laptops">Laptops</option>
-              <option value="phones/tablets">Phones/Tablets</option>
-              <option value="accessories">Accessories</option>
-              <option value="desktop">Desktop</option>
-              <option value="peripharals">Peripharals</option>
-              <option value="gaming">Gaming</option>
-              <option value="sound">Sound</option>
-              <option value="security">Security</option>
-            </select>
-          </p>
-          <a href="/"><i class="fas fa-home"></i> Home</a>
-          <a href="products"><i class="fas fa-box"></i> Products</a>
-          <a href="/about-us"><i class="fas fa-info-circle"></i> About Us</a>
-          {% else %}
-          <a href="login">Login</a>
-          <a href="signup">Signup</a>
-          {% endif %}
-        </nav>
-        <div class="back-btn-container" style="display: none">
-          <!-- button is injected by javascript -->
-        </div>
-
-        <button
-          class="menu-btn nav-menu-btn"
-          id="menuBtn"
-          onclick="navBarToggleOpen()"
-        >
-          ☰
-        </button>
-        <form
-          class="search-box"
-          method="POST"
-          role="search"
-          ,
-          action="/search"
-          style="display: none"
-          id="search-box"
-        >
-          <input
-            name="search"
-            class="search-input"
-            type="text"
-            placeholder="search on vit"
-          />
-          <button type="submit" class="search-btn">
-            <i class="fas fa-search"></i>
-          </button>
-        </form>
-        <div class="header-logo">
-          <a href="cart"
-            ><i class="fas fa-shopping-cart"></i> <span id="cart-count">{{cart_num | length}}</span>
-          </a>
-          <button class="btn-show-dropdown">
-            <i class="fas fa-user"></i> <i class="fas fa-arrow-down"></i>
-          </button>
-          <button class="btn-hide-dropdown">
-            <i class="fas fa-user"></i> <i class="fas fa-arrow-up"></i>
-          </button>
-          <img
-            class="mobile-logo"
-            src="{{url_for('static', filename='img/favicon.jpg')}}"
-            alt="logo"
-          />
-        </div>
-      </div>
-    </header>
-
     <div class="flash-container">
       {% with messages = get_flashed_messages(with_categories=true) %} {% if
-        messages %} {% for category, message in messages %} {% if
-          category=='error' %}
-          <div class="flash alert-error" role="alert" id="div_flash">
-            {{message}}
-            <!-- <button type="button" class="btn-error" onclick="removeFlash()">
+      messages %} {% for category, message in messages %} {% if
+      category=='error' %}
+      <div class="flash alert-error" role="alert" id="div_flash">
+        {{message}}
+        <!-- <button type="button" class="btn-error" onclick="removeFlash()">
               <span aria-hidden="true">&times;</span>
             </button> -->
-          </div>
+      </div>
 
-          {% else %}
-          <div id="div_flash2" class="flash alert-success" role="alert">
+      {% else %}
+      <div id="div_flash2" class="flash alert-success" role="alert">
         {{message}}
         <!-- <button type="button" class="btn-success" onclick="removeFlash()">
                             <span aria-hidden="true">&times;</span>
@@ -178,6 +188,7 @@
       </div>
       {% endif %} {% endfor %} {% endif %} {% endwith %}
     </div>
+    
     <section class="dropdown-menu">
       {% if user.id == 1 %}
       <a href="admin-dashboard"
@@ -196,10 +207,15 @@
     </section>
 
     {% block body %} {% endblock %}
-    
+
     <footer class="footer">
       <div class="container">
-        <p>© 2026 TechStore. All rights reserved.</p>
+        <p class="footer-header">© 2026 TechStore. All rights reserved.</p>
+        <p class="footer-links">
+          <a href="privacy" target="_blank">Privacy Policy</a
+          ><a href="terms" target="_blank">Terms, Dlivery & Refund Policy</a
+          ><a href="contact" target="_blank">Contact Us</a>
+        </p>
       </div>
     </footer>
 

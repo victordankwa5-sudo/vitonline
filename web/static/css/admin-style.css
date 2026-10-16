@@ -169,15 +169,6 @@ body {
     border-radius: 10px;
     cursor: pointer;
 }
-.notification {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 7px;
-    height: 7px;
-    background: #ef4444;
-    border-radius: 50%;
-}
 .header-user {
     display: flex;
     align-items: center;
@@ -463,9 +454,9 @@ table, th, td{
     padding: .5rem;
 }
 
-td{
+/* td{
     padding: 2rem;
-}
+} */
 
 thead th span.icon-arrow{
     display: inline-block;
@@ -943,10 +934,26 @@ tbody tr.hide td a{
     height: 17px;
 }
 
-.export__file .export__file-btn{
-    display: inline-block;
-    width: 2rem;
-    height: 2rem;
-    background-color: #06b6d4;
-    border-radius: 50%;
+.notification-list{
+    margin-top: 20px;
+}
+
+.notification{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--border);
+    background-color: #fff;
+    padding: 10px 20px;
+}
+
+.notification-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.delete-notification{
+    text-align: center;
+    text-decoration: none;
 }

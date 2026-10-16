@@ -362,7 +362,7 @@ body {
    PRODUCTS SECTION
 ========================= */
 .products {
-    padding: 40px 0 80px;
+    padding: 20px 0 20px;
 }
 
 .products h2 {
@@ -725,6 +725,28 @@ body {
     backdrop-filter: blur(10px);
 }
 
+.footer-header{
+    margin-bottom: 15px;
+    color: gray;
+    padding: .2rem;
+    border-bottom: 2px solid gray;
+}
+
+.footer-links{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer-links a{
+    text-decoration: none;
+    color: var(--navTextColor);
+}
+
+.footer-links a:hover{
+    color: var(--navTextHoverColor);
+}
+
 /* =========================
    ANIMATIONS
 ========================= */
@@ -793,6 +815,23 @@ body {
     width: 15px;
 }
 
+/* =========================
+   CALL TO ORDER BANNER
+========================= */
+.call-to-order {
+    background: linear-gradient(135deg, #6366f1, #06b6d4);
+    color: white;
+    text-align: center;
+    padding: 12px 0;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+
+.call-to-order strong {
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
 
 
 .remove-cart-btn{
@@ -1637,7 +1676,7 @@ body {
     color: white;
     font-family: Arial;
     font-weight: 500;
-    background: linear-gradient(135deg, #3235af, #1f8496);
+    background: linear-gradient(135deg, #6366f1, #06b6d4);
     padding: 1rem;
     border-radius: 10px;
     text-decoration: none;

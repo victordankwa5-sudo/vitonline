@@ -7,8 +7,8 @@
       <div class="stat-icon purple"><i class="fas fa-dollar-sign"></i></div>
       <div>
         <p>Total Revenue</p>
-        <h2>{{settings.currency}}0</h2>
-        <small class="positive">0% this month</small>
+        <h2>{{settings.currency}} {{total_revenue}}</h2>
+        <small class="positive">{{months_percentage}}% this month</small>
       </div>
     </div>
     <div class="stat-card">
@@ -56,7 +56,7 @@
             <small>#ORD-{{order.id}}</small>
           </div>
           <div>
-            <strong>{{settings.currency}}{{order.price}}</strong>
+            <strong>{{settings.currency}}{{order.total}}</strong>
             <small class="status shipped">{{order.status}}</small>
           </div>
         </div>
